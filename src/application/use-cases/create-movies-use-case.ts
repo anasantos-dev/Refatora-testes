@@ -2,7 +2,7 @@ import { Movie } from "../../domain/movie";
 import { MovieRepository } from "../repositories/movie-repository";
 
 export interface Params {
-  title: string;
+  title: string;  APAGAR DEPOIS
   summary: string;
   origin: string;
   image: string;
