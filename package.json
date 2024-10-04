@@ -1,0 +1,29 @@
+{
+  "name": "romanticmovies",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node-dev --respawn --respawn src/interface/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.5.5",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "mongoose": "^8.7.0",
+    "nodemon": "^3.1.7",
+    "ooid": "^1.1.19",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.6.2",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/mongoose": "^5.11.97",
+    "@types/uuid": "^10.0.0"
+  },
+  "description": ""
+}
