@@ -1,22 +1,26 @@
 import { Movie } from "../../domain/movie";
 import { MovieRepository } from "../repositories/movie-repository";
 
+// Parâmetros necessários para criar um filme
 export interface Params {
-  title: string;  APAGAR DEPOIS
+  title: string;  
   summary: string;
   origin: string;
   image: string;
 }
-export class CreateMovieUseCase {
-  constructor(private movieRepository: MovieRepository) {}
+// Classe que define o caso de uso de criar um filme
+export class CreateMoviesUseCase {
+// O repositório é injetado via construtor, para que possamos simular ele no teste
+  constructor(private  readonly movieRepository: MovieRepository) {}
 
+// Método principal que executa a criação do filme
   async execute(movieParams: Params): Promise<Movie> {
     const movie: Movie = {
       createdAt: this.getDate(),
-      ...movieParams,
+      ...movieParams,// Adiciona os parâmetros do filme
     };
-    console.log("movie", movie);
-    const movieCreated = await this.movieRepository.save(movie);
+    // Salva o filme no repositório  
+    await this.movieRepository.save(movie);
 
     return movie;
   }

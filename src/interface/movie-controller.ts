@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CreateMovieUseCase } from "../application/use-cases/create-movies-use-case";
+import { CreateMoviesUseCase } from "../application/use-cases/create-movies-use-case";
 import { ListAllMoviesUseCase } from '../application/use-cases/list-all-movies-use-case';
 import { ListMovieByIdUseCase } from '../application/use-cases/list-movie-by-id-use-case';
 import { DeleteMovieUseCase } from '../application/use-cases/delete-movie-use-case';
@@ -25,17 +25,17 @@ interface MovieDTO {
 
 export class MovieController {
   constructor(
-    private createMovieUseCase: CreateMovieUseCase,
-    private listAllMoviesUseCase: ListAllMoviesUseCase,
-    private listMovieByIdUseCase: ListMovieByIdUseCase,
-    private deleteMovieUseCase: DeleteMovieUseCase,
-    private updateMovieUseCase: UpdateMovieUseCase
+    private readonly createMoviesUseCase: CreateMoviesUseCase,
+    private readonly listAllMoviesUseCase: ListAllMoviesUseCase,
+    private readonly listMovieByIdUseCase: ListMovieByIdUseCase,
+    private readonly deleteMovieUseCase: DeleteMovieUseCase,
+    private readonly updateMovieUseCase: UpdateMovieUseCase
   ) {}
 
   async create(req: Request, res: Response): Promise<void> {
     try {
       const movieData: CreateMovieDTO = req.body;
-      const movie = await this.createMovieUseCase.execute(movieData);
+      const movie = await this.createMoviesUseCase.execute(movieData);
       res.status(201).json(movie);
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });

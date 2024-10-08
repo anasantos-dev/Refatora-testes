@@ -16,7 +16,7 @@ export class Repository implements MovieRepository {
 
   // Método para buscar um filme por ID
   async findById(id: string): Promise<Movie | null> {
-    return await MovieModel.findById(id);
+    return await MovieModel.findById(id);  // Se não encontrar, retorna null, o que é esperado
   }
 
   // Método para deletar um filme por ID
