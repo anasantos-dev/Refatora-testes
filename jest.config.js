@@ -1,5 +1,7 @@
+/** @type {import('ts-jest').JestConfigWithTsJest} **/
 module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
-  testMatch: ['**/?(*.)+(spec|test).ts'],  // Agora o Jest encontrará arquivos de teste em qualquer pasta
+  testEnvironment: "node",
+  transform: {
+    "^.+.tsx?$": ["ts-jest",{}],
+  },
 };

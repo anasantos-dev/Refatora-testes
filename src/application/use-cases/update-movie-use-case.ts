@@ -1,16 +1,19 @@
-import { MovieRepository } from '../repositories/movie-repository';
 import { Movie } from '../../domain/movie';
+import { MovieRepository } from '../repositories/movie-repository';
 
 export class UpdateMovieUseCase {
   constructor(private readonly movieRepository: MovieRepository) {}
 
-  async execute(id: string, updatedMovie: Partial<Movie>): Promise<Movie | null> {
+  async execute(id: string, params: Partial<Movie>): Promise<Movie | null> {
     const movie = await this.movieRepository.findById(id);
     if (!movie) {
-      throw new Error('Movie not found');
+      return null;
     }
-    return await this.movieRepository.update(id, updatedMovie);
+
+    // Atualize os campos do filme e salve
+    Object.assign(movie, params);
+    await this.movieRepository.update(id, movie);
+    
+    return movie;
   }
-
-
 }

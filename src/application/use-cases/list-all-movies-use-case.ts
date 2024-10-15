@@ -1,11 +1,14 @@
-import { MovieRepository } from '../repositories/movie-repository';
 import { Movie } from '../../domain/movie';
+import { MovieRepository } from '../repositories/movie-repository';
 
 export class ListAllMoviesUseCase {
-  constructor(private readonly movieRepository: MovieRepository) {}
+ 
+  constructor(
+    private readonly movieRepository: MovieRepository
+  ) {}
 
-  async execute(): Promise<Movie[]> {
-    const movies = await this.movieRepository.findAll();
-    return movies;
+  async execute(): Promise<Array<Movie >> {
+    return await this.movieRepository.findAll();
   }
+
 }

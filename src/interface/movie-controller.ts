@@ -4,24 +4,7 @@ import { ListAllMoviesUseCase } from '../application/use-cases/list-all-movies-u
 import { ListMovieByIdUseCase } from '../application/use-cases/list-movie-by-id-use-case';
 import { DeleteMovieUseCase } from '../application/use-cases/delete-movie-use-case';
 import { UpdateMovieUseCase } from '../application/use-cases/update-movie-use-case';
-
-export interface CreateMovieDTO {
-  title: string;
-  summary: string;
-  origin: string;
-  image: string;
-  status: "read" | "unread" | "donated";
-}
-
-interface MovieDTO {
-  id: string;
-  title: string;
-  summary: string;
-  origin: string;
-  image: string;
-  createdAt: string;
-  status: "read" | "unread" | "donated";
-}
+import { Movie } from '../domain/movie'; 
 
 export class MovieController {
   constructor(
@@ -29,68 +12,78 @@ export class MovieController {
     private readonly listAllMoviesUseCase: ListAllMoviesUseCase,
     private readonly listMovieByIdUseCase: ListMovieByIdUseCase,
     private readonly deleteMovieUseCase: DeleteMovieUseCase,
-    private readonly updateMovieUseCase: UpdateMovieUseCase
+    private readonly updateMovieUseCase: UpdateMovieUseCase,
   ) {}
 
-  async create(req: Request, res: Response): Promise<void> {
-    try {
-      const movieData: CreateMovieDTO = req.body;
-      const movie = await this.createMoviesUseCase.execute(movieData);
-      res.status(201).json(movie);
-    } catch (error) {
-      res.status(500).json({ error: "Internal Server Error" });
+  async create(req: Request, res: Response) {
+    const params: Movie = req.body;
+
+    if (!params.title || !params.summary || !params.origin || !params.image) {
+      return res.status(400).json({ message: "Todos os campos são obrigatórios." });
     }
+
+    const movie = await this.createMoviesUseCase.execute(params);
+    res.status(201).json(movie);
   }
 
-  async listAll(req: Request, res: Response): Promise<void> {
-    try {
-      const movies = await this.listAllMoviesUseCase.execute();
-      res.json(movies);
-    } catch (error) {
-      res.status(500).json({ error: "Internal Server Error" });
-    }
+  async listAll(req: Request, res: Response) {
+    const movies = await this.listAllMoviesUseCase.execute();
+    res.json(movies);
   }
 
-  async getMovieById(req: Request, res: Response): Promise<void> {
+  // Ajuste no retorno de Promise<Response>
+  async getMovieById(req: Request, res: Response): Promise<Response> {
     try {
       const id = req.params.id; // Obtém o ID da URL
       const movie = await this.listMovieByIdUseCase.execute(id); // Busca pelo ID
   
       if (!movie) {
-        res.status(404).json({ message: 'Filme não encontrado' });
-      } else {
-        res.status(200).json(movie); // Retorna o filme específico
+        return res.status(404).json({ message: 'Movie not found' }); // Retorna 404 se o filme não for encontrado
       }
+  
+      return res.status(200).json(movie); // Retorna 200 com o filme encontrado
     } catch (error) {
-      res.status(500).json({ message: 'Erro ao buscar o filme', error });
+      console.error('Erro ao buscar o filme:', error); // Log para depuração
+      return res.status(500).json({ message: 'Erro ao buscar o filme', error: (error as Error).message });
     }
   }
   
 
-  async deleteMovieById(req: Request, res: Response): Promise<void> {
+  async deleteMovieById(req: Request, res: Response): Promise<Response> {
     try {
-      const id = req.params.id;
-      await this.deleteMovieUseCase.execute(id);
-      res.status(200).json({ message: 'Movie deleted successfully' });
+      const { id } = req.params;
+      const movieFiltered = await this.deleteMovieUseCase.execute(id);
+
+      if (!movieFiltered) {
+        return res.status(404).json({ message: `Filme com id ${id} não encontrado.` });
+      }
+
+      return res.json({
+        message: `Filme com id ${id} deletado com sucesso.`,
+        movieFiltered,
+      });
     } catch (error) {
-      res.status(500).json({ message: 'Error deleting movie', error });
+      return res.status(500).json({ message: 'Erro ao deletar o filme.', error: (error as Error).message });
     }
   }
 
-  async updateMovie(req: Request, res: Response): Promise<void> {
+  async updateMovie(req: Request, res: Response): Promise<Response> {
     try {
-      const id = req.params.id;
-      const updatedData = req.body;
+      const { id } = req.params;
+      const params = req.body;
 
-      const updatedMovie = await this.updateMovieUseCase.execute(id, updatedData);
+      const movieUpdated = await this.updateMovieUseCase.execute(id, params);
 
-      if (!updatedMovie) {
-        res.status(404).json({ message: 'Movie not found' });
-      } else {
-        res.status(200).json(updatedMovie);
+      if (!movieUpdated) {
+        return res.status(404).json({ message: `Filme com id ${id} não encontrado.` });
       }
+
+      return res.json({
+        message: `Filme com id ${id} atualizado com sucesso.`,
+        movieUpdated,
+      });
     } catch (error) {
-      res.status(500).json({ message: 'Error updating movie', error });
+      return res.status(500).json({ message: 'Erro ao atualizar o filme.', error: (error as Error).message });
     }
   }
 }

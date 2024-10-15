@@ -1,4 +1,4 @@
-import { Repository } from "../database/mongo-db/repository";
+import { Repository } from "../database/mongo-db/movie-repository";
 import { MovieController } from "../../interface/movie-controller";
 
 import { CreateMoviesUseCase } from "../../application/use-cases/create-movies-use-case";

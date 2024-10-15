@@ -1,7 +1,7 @@
 import { Schema, model, Document } from 'mongoose';
 
-// Interface para tipar o documento do Mongoose
-interface MovieDocument extends Document {
+
+interface MovieDocument extends Document {// Interface para tipar o documento do Mongoose
   title: string;
   summary: string;
   origin: string;
@@ -9,8 +9,7 @@ interface MovieDocument extends Document {
   createdAt: Date;
 }
 
-// Definindo o esquema com tipos corretos
-const ModelSchema = new Schema<MovieDocument>({
+const ModelSchema = new Schema<MovieDocument>({// Definindo o esquema com tipos corretos
   title: {
     type: String,
     required: true,
@@ -33,6 +32,16 @@ const ModelSchema = new Schema<MovieDocument>({
   },
 });
 
+const UserSchema = new Schema({
+  email: {
+    type: String,
+    require: true,
+  },
+  password: {
+    type: String,
+    require: true,
+  },
+});
 // Criando o modelo
 export const MovieModel = model<MovieDocument>('Movie', ModelSchema);
-export const UserModel = model('users', ModelSchema)
+export const UserModel = model('users', UserSchema)
