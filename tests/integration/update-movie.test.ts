@@ -1,7 +1,7 @@
 import supertest from "supertest";
 import mongoose from "mongoose";
-import app from "../../src/interface"; // Importa o app da interface
-import { MovieModel } from "../../src/infrastructure/database/mongo-db/model"; // Modelo do MongoDB
+import app from "../../src/interface"; 
+import { MovieModel } from "../../src/infrastructure/database/mongo-db/model";
 
 const request = supertest(app);
 

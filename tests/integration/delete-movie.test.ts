@@ -1,6 +1,6 @@
 import supertest from "supertest";
 import mongoose from "mongoose";
-import app from "../../src/interface"; // Certifique-se que o caminho esteja correto
+import app from "../../src/interface"; 
 
 const request = supertest(app);
 
@@ -27,14 +27,14 @@ describe("DeleteMovieE2E", () => {
 
     // Cria o filme e armazena a resposta
     const createResponse = await request.post("/movies").send(movieData);
-    const createdMovieId = createResponse.body._id || createResponse.body.id; // Considera _id ou id
+    const createdMovieId = createResponse.body._id || createResponse.body.id; 
 
     // Verifica se o filme foi criado corretamente
     expect(createResponse.status).toBe(201);
     expect(createResponse.body).toMatchObject({
       ...movieData,
-      _id: expect.any(String), // Garante que o _id foi gerado (ajustado para _id)
-      createdAt: expect.any(String), // Garante que a data foi gerada
+      _id: expect.any(String), 
+      createdAt: expect.any(String), 
     });
 
     // Agora tenta deletar o filme que acabou de ser criado

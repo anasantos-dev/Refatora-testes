@@ -2,7 +2,7 @@ import supertest from "supertest";
 import app from "../../src/interface";
 import mongoose from "mongoose";
 
-jest.setTimeout(60000); // Aumenta o tempo limite para 20 segundos
+jest.setTimeout(60000); 
 
 
 const request = supertest(app);
@@ -24,7 +24,7 @@ describe("ListAllMoviesE2E", () => {
   });
 
 // Define um timeout global para este arquivo de teste
-jest.setTimeout(60000); // Aumenta o tempo limite para 30 segundos
+jest.setTimeout(60000); 
 
 // Cenário 1: Deve retornar uma lista vazia se não houver filmes cadastrados
 it("should return an empty list if there are no movies registered", async () => {
